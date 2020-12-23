@@ -1,0 +1,41 @@
+<%- include ('../header') %>
+
+<div class="container">
+    <form method="POST" action="add">
+
+        <input type="text" class="form-control" name="title" placeholder="Naslov" required>
+        <br>
+        <div class="mb-2">
+            <button type="button" class="btn btn-secondary" title="Bold" onclick="insertTag('<b>', '</b>')">B</button>
+            <button type="button" class="btn btn-secondary" title="Italic" onclick="insertTag('<i>', '</i>')"><i>I</i></button>
+            <button type="button" class="btn btn-secondary" title="Underline" onclick="insertTag('<u>', '</u>')"><u>U</u></button>
+        </div>
+        <textarea class="form-control" id="text" name="text" rows="6" cols="50" required maxlength="2000"></textarea>
+        <br>
+        <input class="btn btn-secondary" type="submit" value="Posalji">
+
+    </form>
+
+    
+    <% if( messages.error) { %>
+        <p class="text-danger"> <%= messages.error %> </p>
+    <% } %>  
+
+
+
+</div>
+
+<script>
+    var textarea = document.getElementById("text");
+
+    function insertTag(tagStart, tagEnd){        
+        var text = textarea.value;
+        var cursorStart = textarea.selectionStart;
+        var cursorEnd = textarea.selectionEnd;
+        console.log(cursorStart);
+        console.log(cursorEnd);
+        textarea.value = text.substring(0, cursorStart) + tagStart + text.substring(cursorStart,cursorEnd) + tagEnd + text.substring(cursorEnd);
+    }
+</script>
+
+<%- include ('../footer') %>

@@ -1,0 +1,55 @@
+<%- include ('../header') %>
+
+<div class="container">
+    <% if(user) {%>
+        <div class="row mb-2">
+            <div class="col-3">
+                <img class="img-fluid" src="<%= user.avatar %>" onerror="this.onerror=null;this.src='/public/default.jpg';">
+            </div>
+            <div class="col-9">
+                <h2><%= user.username %></h2>
+                <p>Broj poruka: <%= user.message_count %></p>
+                <p>Datum uclanjenja: <%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', day: '2-digit', hour: 'numeric', minute: 'numeric'}).format(user.join_date) %></p>
+            </div>
+        </div>    
+
+        <% if(currentUser && user.username == currentUser.username) {%>
+            <div class="border border-secondary p-1">
+                <form action="/users/changePassword" method="POST">
+                    <div class="form-group">
+                        <label for="old_password">Trenutna lozinka:</label>
+                        <input type="password" class="form-control" name="old_password" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="new_password">Nova lozinka:</label>
+                        <input type="password" class="form-control" name="new_password" placeholder="Password">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-secondary">Sacuvaj</button>
+                </form>               
+            </div>
+            
+            <div class="border border-secondary p-1 mt-2">
+                <form action="/users/changeAvatar" method="POST">
+                    <div class="form-group">
+                        <label for="avatar">Avatar URL:</label>
+                        <input type="text" class="form-control" name="avatar" placeholder="Avatar URL" maxlength="150">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-secondary">Sacuvaj</button>
+                </form>
+            </div>
+
+            <%- include ('../components/message') %>
+            <%- include ('../components/error') %>
+
+        <% } %>    
+    <% } else { %>
+        <p>Korisnik nije pronadjen</p>
+    <% } %>   
+
+</div>
+
+
+
+<%- include ('../footer') %>

@@ -1,0 +1,30 @@
+
+    <% if(page > 1) { %>
+        <a class="btn btn-secondary" href="/threads/<%= posts[0].thread_id %>/page-<%= Number(page) - 1 %>">Prethodna</a>
+    <% }  
+    if(lastPage > 1) { %>
+        <% for (let index = 1; index <= lastPage; index++) {           
+            if(index <= 2 || index +1 >= lastPage || lastPage <= 5) {
+                if(page == index) { %>
+                    <a class="btn btn-info" href="/threads/<%= posts[0].thread_id %>/page-<%= index %>"><%= index %></a>
+                <% } else { %>
+                    <a class="btn btn-secondary" href="/threads/<%= posts[0].thread_id %>/page-<%= index %>"><%= index %></a>
+                <% }
+            } else { 
+                if(index < page) {
+                    index = page -1;
+                    if(index > lastPage - 2) index = lastPage - 2;
+                    %>
+                ...<% } %>
+            <% if(index == page) { %>
+                    <a class="btn btn-info" href="/threads/<%= posts[0].thread_id %>/page-<%= index %>"><%= index %></a>
+                <% }
+                if(index > page) {
+                    index = lastPage - 2; %>
+                    ...                                               
+            <% }} %>                                                             
+        <% } %>    
+    <% }
+    if(page < lastPage) { %>      
+        <a class="btn btn-secondary" href="/threads/<%= posts[0].thread_id %>/page-<%= Number(page) + 1 %>">Sledeca</a>
+    <% } %> 

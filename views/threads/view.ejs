@@ -1,0 +1,102 @@
+<%- include ('../header') %>
+
+<div class="container">
+
+    <h2><%= posts[0].title %></h2>
+
+    
+    <%- include ('../components/pageIndex') %>
+    <div class="mt-1">
+    <% 
+        posts.forEach(post => { %>
+            <div class="border d-flex row mb-2 bg-secondary border border-secondary">
+                <div class="p-2 bg-light col-2 justify-content-center text-center bg-dark ">
+                    <img class="img-fluid" src="<%= post.avatar %>" onerror="this.onerror=null;this.src='/public/default.jpg';">
+                    <br>
+                    <b><a class="text-white" href="/users/<%= post.user %>/view"><%= post.user %></a></b>
+                    <p><small>Broj poruka: <%= post.message_count %></small></p>
+                </div>
+                <div class="p-1 col-10">
+                    <%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', day: '2-digit', hour: 'numeric', minute: 'numeric'}).format(post.date) %>
+                    <% if(currentUser){ %>
+                        <button class="btn float-right" text="<%= post.text %>" onclick="quote(this,'<%= post.user %>')">Citiraj</button>
+                    <% } %>
+                    <hr>
+                    <% //format message
+                        post.text = post.text.replace(/\[quote="([^"]*)"\]/g, `<blockquote class="bg-dark p-1 border border-secondary"><div class="font-italic text-info">$1:</div>`);                       
+                        post.text = post.text.replace(/\[\/quote\]/g, '</blockquote>'); 
+
+                        post.text = post.text.replace(/\[img\](.*)\[\/img\]/g, '<img src="$1">');                       
+                        
+                    %>    
+
+                    <%- post.text.replace(/(?:\r\n|\r|\n)/g, '<br>'); %>
+                </div>
+            </div>            
+        <% }); %> 
+    </div>   
+
+    <%- include ('../components/pageIndex') %>    
+       
+
+    <% if(currentUser) { %>   
+    <div class="row justify-content-center mt-1">
+        <div class="border rounded p-2 col-lg-8 col-md-11 col-sm-11 col-11 bg-secondary">
+            <div class="mb-2">
+                <button class="btn btn-secondary" title="Bold" onclick="insertTag('<b>', '</b>')">B</button>
+                <button class="btn btn-secondary" title="Italic" onclick="insertTag('<i>', '</i>')"><i>I</i></button>
+                <button class="btn btn-secondary" title="Underline" onclick="insertTag('<u>', '</u>')"><u>U</u></button>
+                
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownInsertImg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        IMG
+                    </button>
+                    <div class="dropdown-menu p-1" aria-labelledby="dropdownInsertImg">
+                        <input type="text" id="imgURL" class="" placeholder="URL">
+                        <button class="btn btn-secondary" title="Underline" onclick="insertImg()"><u>Ubaci</u></button>
+                    </div>
+                    </div>
+                          
+            <div>
+                <form action="/posts/add" method="POST">
+                    <input type="number" name="thread" value="<%= posts[0].thread_id %>" hidden>
+                    <textarea class="bg-light" name="text" id="text" rows="6" placeholder="Napisi odgovor..." required maxlength="2000" style="width: 100%; min-height: 100px;"></textarea>
+                    <br>
+                    <input class="btn btn-info mt-1" type="submit" value="Odgovori">
+                </form>
+            </div>
+            <%- include ('../components/error') %>     
+        </div>           
+    </div>
+    <% } %>
+    
+</div>
+
+<script>
+    var textarea = document.getElementById("text");
+
+    function insertTag(tagStart, tagEnd){        
+        var text = textarea.value;
+        var cursorStart = textarea.selectionStart;
+        var cursorEnd = textarea.selectionEnd;
+        textarea.value = text.substring(0, cursorStart) + tagStart + text.substring(cursorStart,cursorEnd) + tagEnd + text.substring(cursorEnd);
+    }
+    function quote(button, user){
+        var text = button.getAttribute("text"); 
+        textarea.value += `[quote="${user}"]${text}[/quote]`;
+        textarea.focus();
+        window.scrollTo(0,document.body.scrollHeight);
+    }
+    function insertImg(){
+        var text = textarea.value;
+        var url = document.getElementById("imgURL").value; 
+        document.getElementById("imgURL").value = "";
+        //textarea.value += `[img]${text}[/img]`;
+
+        var cursorStart = textarea.selectionStart;
+        var cursorEnd = textarea.selectionEnd;
+        textarea.value = text.substring(0, cursorStart) + `[img]${url}[/img]` + text.substring(cursorEnd);
+    }
+
+</script>
+
+<%- include ('../footer') %>
