@@ -52,24 +52,14 @@ app.use((req, res, next) => {
     next();
 })
 
-
+//routes
+app.use("/", require('./routes/index'));
 app.use("/threads", require('./routes/threads'));
 app.use("/posts", require('./routes/posts'));
 app.use("/users", require('./routes/users'));
 
 app.set('view engine', 'ejs');
 
-
-//index page
-app.get("/", (req, res) => {
-    //console.log(req.body.user);
-    //db.query('SELECT count(post.id) as postCount, MAX(post.date) as lastPost, post.thread as id, thread.title from post JOIN thread on post.thread = thread.id GROUP by thread ORDER BY lastPost DESC',(err, result) => {
-    db.query('SELECT count(post.id) as postCount, MAX(post.date) as lastPost, thread.id as id, thread.title from post JOIN thread on post.thread = thread.id GROUP by thread.id, thread.title ORDER BY lastPost DESC',(err, result) => {
-        //console.log(result);
-        //console.log(err);
-        res.render('index', {threads: result.rows});
-    });   
-});
 
 
 

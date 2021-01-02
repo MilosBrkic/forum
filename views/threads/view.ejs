@@ -1,7 +1,13 @@
-<%- include ('../header') %>
+<%- include ('../components/header') %>
 
 <div class="container">
 
+    <div>
+        <a class="text-white" href="/">Forum</a> > 
+        <a class="text-white" href="/subforum/<%= posts[0].subforum %>"><%= posts[0].subforum %></a> > 
+        <a class="text-white" href="<%= posts[0].thread_id %>"><%= posts[0].title %></a>
+    </div>
+    
     <h2><%= posts[0].title %></h2>
 
     
@@ -99,4 +105,4 @@
 
 </script>
 
-<%- include ('../footer') %>
+<%- include ('../components/footer') %>

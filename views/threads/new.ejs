@@ -1,8 +1,19 @@
-<%- include ('../header') %>
+<%- include ('../components/header') %>
 
 <div class="container">
-    <form method="POST" action="add">
 
+    <div class="mb-2">
+        <a class="text-white" href="/">Forum</a> > 
+        <a class="text-white" href="/subforum/<%= subforum.name %>"><%= subforum.name %></a>
+    </div>
+
+
+
+    <h2><%= subforum.name %></h2>
+
+    <form method="POST" action="/threads/add">
+
+        <input type="text" name="subforum" value="<%= subforum.id %>" hidden>
         <input type="text" class="form-control" name="title" placeholder="Naslov" required>
         <br>
         <div class="mb-2">
@@ -38,4 +49,4 @@
     }
 </script>
 
-<%- include ('../footer') %>
+<%- include ('../components/footer') %>

@@ -1,27 +1,25 @@
-<%- include ('./header') %>
+<%- include ('./components/header') %>
 
 <div class="container">
 
-    <% if(currentUser) { %>
-    <a class="btn btn-secondary mb-1" href="/threads/new">Nova tema</a>
-    <% } %>
 
-    <table class="table table-sm text-white">
+
+    <table class="table text-white">
         <thead>
             <tr>
-              <th scope="col" style="width: 65%">Naziv teme</th>
-              <th scope="col" style="width: 15%">Broj postova</th>
-              <th scope="col" style="width: 20%">Poslednji post</th>
+              <th scope="col" style="width: 65%">Forum</th>
+              <th scope="col" style="width: 15%">Teme</th>
+              <th scope="col" style="width: 20%">Postovi</th>
             </tr>
         </thead>
         <tbody>
         <%
-        if(threads)
-        threads.forEach(function(thread) { %>
+        if(forums)
+        forums.forEach(function(subforum) { %>
             <tr>
-                <td><h5><a class="text-white" href="threads/<%=thread.id %>"><%=thread.title %></a></h5></td>
-                <td><%= thread.postcount %></td>
-                <td><%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric'}).format(thread.lastpost) %></td>
+                <td><h4><a class="text-white" href="subforum/<%=subforum.name %>"><%=subforum.name %></a></h4></td>
+                <td><%= subforum.threadcount %></td>
+                <td><%= subforum.postcount %></td>
             </tr>
         <% });  %>
         </tbody>     
@@ -30,4 +28,4 @@
 
 
 
-<%- include ('./footer') %>
+<%- include ('./components/footer') %>
