@@ -14,7 +14,7 @@
     <form method="POST" action="/threads/add">
 
         <input type="text" name="subforum" value="<%= subforum.id %>" hidden>
-        <input type="text" class="form-control" name="title" placeholder="Naslov" required>
+        <input type="text" class="form-control" name="title" placeholder="Title" required>
         <br>
         <div class="mb-2">
             <button type="button" class="btn btn-secondary" title="Bold" onclick="insertTag('<b>', '</b>')">B</button>
@@ -23,7 +23,7 @@
         </div>
         <textarea class="form-control" id="text" name="text" rows="6" cols="50" required maxlength="2000"></textarea>
         <br>
-        <input class="btn btn-secondary" type="submit" value="Posalji">
+        <input class="btn btn-secondary" type="submit" value="Post">
 
     </form>
 

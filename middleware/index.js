@@ -3,7 +3,7 @@ function isLogged(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
 	}
-	req.flash('error', 'Morate se prijaviti');
+	req.flash('error', 'You need to be logged in');
 	res.redirect('/users/login');
 };
 

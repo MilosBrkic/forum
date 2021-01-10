@@ -1,0 +1,14 @@
+<%- include ('../components/header') %>
+
+<div class="container">
+    <h2>Forum members:</h2>
+
+    <% users.forEach(user => { %>
+        <div class="">
+            <h5><a class="text-white" href="/users/<%= user.username %>/view"><%= user.username %></a></h5>
+        </div>
+    <% }); %>
+</div>
+
+
+<%- include ('../components/footer') %>

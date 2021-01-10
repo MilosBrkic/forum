@@ -1,0 +1,25 @@
+<%- include ('../components/header') %>
+
+<div class="container">
+    <h2>New subforum</h2>
+
+    <div>
+        <form action="/subforum/add" method="POST">
+            <div class="form-group">
+                <label for="name">Subforum name:</label>
+                <input type="text" class="form-control" name="name">
+              </div>
+              <div class="form-group">
+                <label for="description">Description (optional):</label>
+                <input type="text" class="form-control" name="description" placeholder="Describe what kind of threads are posted here...">
+              </div>
+
+              <button type="submit" class="btn btn-secondary">Add</button>
+        </form>
+        <%- include ('../components/message') %>   
+        <%- include ('../components/error') %>   
+    </div>
+</div>
+
+
+<%- include ('../components/footer') %>

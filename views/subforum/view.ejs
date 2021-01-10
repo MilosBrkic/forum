@@ -7,20 +7,20 @@
         <a class="text-white" href="<%= subforum.name %>"><%= subforum.name %></a>
     </div>
     
-    <div class="row mb-2">
-        <h2 class="col-auto mr-auto"><%= subforum.name %></h2>
+    <div class="d-flex justify-content-between mb-2">
+        <h2><%= subforum.name %></h2>
 
         <% if(currentUser) { %>           
-            <a class="btn btn-secondary mb-1 col-auto" href="<%= subforum.name %>/threads/new">Nova tema</a>
+            <a class="btn btn-secondary mb-1" href="<%= subforum.name %>/threads/new">New thread</a>
         <% } %>
-    </div>    
+    </div> 
 
-    <table class="table table-sm text-white">
+    <table class="table table-sm text-white table-dark">
         <thead>
             <tr>
-              <th scope="col" style="width: 65%">Naziv teme</th>
-              <th scope="col" style="width: 15%">Postovi</th>
-              <th scope="col" style="width: 20%">Poslednji post</th>
+              <th scope="col" style="width: 65%">Thread</th>
+              <th scope="col" style="width: 15%">Posts</th>
+              <th scope="col" style="width: 20%">Last post</th>
             </tr>
         </thead>
         <tbody>
@@ -30,13 +30,19 @@
             <tr>
                 <td><h5><a class="text-white" href="/threads/<%=thread.id %>"><%=thread.title %></a></h5></td>
                 <td><%= thread.postcount %></td>
-                <td><%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric'}).format(thread.lastpost) %></td>
+                <td><%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric'}).format(thread.lastpost) %></td>   
             </tr>
         <% });  %>
         </tbody>     
     </table>
+
+    <% if(currentUser && currentUser.status == 'admin') { %>
+        <div class="float-right">
+            <a class="btn btn-danger mt-1" href="/subforum/<%= subforum.name %>/delete" 
+            onclick="return confirm('Are you sure you want to delete this subforum? All of the threads in this subforum will be removed as well!')">Delete subforum</a>
+        </div>
+    <% } %>
 </div>
 
-
-
+<%- include ('../components/errorPopup') %>
 <%- include ('../components/footer') %>

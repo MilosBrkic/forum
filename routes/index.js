@@ -4,45 +4,70 @@ const db = require('../db/');
 const isLogged = require('../middleware');
 
 
-
-
-
-
-
-//index page
-/*router.get("/", (req, res) => {
-    db.query('SELECT count(post.id) as postCount, MAX(post.date) as lastPost, thread.id as id, thread.title from post JOIN thread on post.thread = thread.id GROUP by thread.id, thread.title ORDER BY lastPost DESC',(err, result) => {
-        res.render('index', {threads: result.rows});
-    });   
-});*/
-
 //index page
 router.get("/", async (req, res) => {
-    var result = await db.query('SELECT subforum.name, count(DISTINCT thread.id) as threadcount, count(*) as postcount FROM subforum JOIN thread ON subforum.id = thread.subforum_id JOIN post ON thread.id = post.thread GROUP BY subforum.name');
-    console.log(result.rows);
+    var result = await db.query('SELECT subforum.name, subforum.description, count(DISTINCT thread.id) as threadcount, count(post.id) as postcount FROM subforum LEFT JOIN thread ON subforum.id = thread.subforum_id LEFT JOIN post ON thread.id = post.thread GROUP BY subforum.name, subforum.description');
+    //console.log(result.rows);
     res.render('index', {forums: result.rows});
 });
 
+//new subforum view
+router.get("/subforum/new", isLogged, (req, res) => {
+    if(req.user.status == 'admin')
+        res.render('subforum/new');
+    else
+        res.redirect('/');
+});
 
+//add subforum
+router.post("/subforum/add", isLogged, async (req, res) => {
+    if(req.user.status == 'admin'){
+        if(req.body.name){
+            await db.query('INSERT INTO subforum (name, description) VALUES ($1, $2)', [req.body.name, req.body.description]);
+            req.flash('message',`Subforum ${req.body.name} added`);
+        }
+        else{
+            req.flash('error','Name is required');
+        }
+        res.render('subforum/new');
+    }       
+    else
+        res.redirect('/');
+});
+
+//view subforum page
 router.get("/subforum/:name", async (req, res) => {
-    console.log(req.params.name);
     var subforum =  await db.query('SELECT * FROM subforum WHERE name = $1', [req.params.name]);
-    console.log(subforum.rows);
-    //var result = await db.query('SELECT count(post.id) as postCount, MAX(post.date) as lastPost, thread.id as id, thread.title, subforum.name as subforum from post JOIN thread on post.thread = thread.id RIGHT JOIN subforum ON thread.subforum_id = subforum.id WHERE subforum.id = $1 GROUP by thread.id, thread.title, subforum.name  ORDER BY lastPost DESC',[req.params.id]);
+
     if(subforum.rows.length > 0){
         var result = await db.query('SELECT count(post.id) as postCount, MAX(post.date) as lastPost, thread.id as id, thread.title from post JOIN thread on post.thread = thread.id  WHERE thread.subforum_id = $1 GROUP by thread.id, thread.title ORDER BY lastPost DESC',[subforum.rows[0].id]);
-        console.log(result.rows);
         res.render('subforum/view', {threads: result.rows, subforum: subforum.rows[0]});
     }
-        //console.log(err);
     else
-        res.redirect('/');    
-       
-    
+        res.redirect('/');      
 });
+
+
+//delete subforum
+router.get("/subforum/:name/delete", isLogged ,async (req, res) => {    
+    try{
+        if(req.user.status == 'admin')
+            await db.query('DELETE FROM subforum WHERE name = $1', [req.params.name]);
+        else
+            req.flash('error','You do not have permission for this action');
+        res.redirect('back');
+    }
+    catch(err){
+        req.flash('error',err.message);
+        res.redirect('back');
+    }
+});
+
+
 
 //new thread view
 router.get("/subforum/:name/threads/new", isLogged, async (req, res) => {
+    //console.log('subforum view');
     var result = await db.query('SELECT * FROM subforum WHERE name = $1', [req.params.name]);
 
     if(result.rows.length > 0)
@@ -50,5 +75,8 @@ router.get("/subforum/:name/threads/new", isLogged, async (req, res) => {
     else
         res.redirect('/');  
 });
+
+
+
 
 module.exports = router;

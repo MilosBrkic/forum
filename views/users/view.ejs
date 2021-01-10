@@ -8,8 +8,9 @@
             </div>
             <div class="col-9">
                 <h2><%= user.username %></h2>
-                <p>Broj poruka: <%= user.message_count %></p>
-                <p>Datum uclanjenja: <%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', day: '2-digit', hour: 'numeric', minute: 'numeric'}).format(user.join_date) %></p>
+                <p>Status: <%= user.status %><p>
+                <p>Message count: <%= user.message_count %></p>
+                <p>Joined: <%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', day: '2-digit', hour: 'numeric', minute: 'numeric'}).format(user.join_date) %></p>
             </div>
         </div>    
 
@@ -17,15 +18,15 @@
             <div class="border border-secondary p-1">
                 <form action="/users/changePassword" method="POST">
                     <div class="form-group">
-                        <label for="old_password">Trenutna lozinka:</label>
+                        <label for="old_password">Current password:</label>
                         <input type="password" class="form-control" name="old_password" placeholder="Password">
                     </div>
                     <div class="form-group">
-                        <label for="new_password">Nova lozinka:</label>
+                        <label for="new_password">New password:</label>
                         <input type="password" class="form-control" name="new_password" placeholder="Password">
                     </div>
                     
-                    <button type="submit" class="btn btn-secondary">Sacuvaj</button>
+                    <button type="submit" class="btn btn-secondary">Save</button>
                 </form>               
             </div>
             
@@ -36,7 +37,7 @@
                         <input type="text" class="form-control" name="avatar" placeholder="Avatar URL" maxlength="150">
                     </div>
                     
-                    <button type="submit" class="btn btn-secondary">Sacuvaj</button>
+                    <button type="submit" class="btn btn-secondary">Save</button>
                 </form>
             </div>
 
@@ -45,11 +46,10 @@
 
         <% } %>    
     <% } else { %>
-        <p>Korisnik nije pronadjen</p>
+        <p>User not found</p>
     <% } %>   
 
 </div>
-
 
 
 <%- include ('../components/footer') %>
