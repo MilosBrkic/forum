@@ -22,6 +22,7 @@ router.get("/:id", async (req, res) => {
     var result = await db.query(getByIdquery, [req.params.id]);
     var pagePosts = result.rows.slice(0 , numPost);
     var lastPage = Math.ceil(result.rows.length / numPost);
+    //console.log(pagePosts); 
     res.render('threads/view', {posts : pagePosts, page : 1, lastPage: lastPage});
 });
 

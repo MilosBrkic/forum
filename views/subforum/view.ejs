@@ -7,13 +7,14 @@
         <a class="text-white" href="<%= subforum.name %>"><%= subforum.name %></a>
     </div>
     
-    <div class="d-flex justify-content-between mb-2">
-        <h2><%= subforum.name %></h2>
 
+    <div class="d-flex justify-content-between">
+        <h2><%= subforum.name %></h2>
         <% if(currentUser) { %>           
             <a class="btn btn-secondary mb-1" href="<%= subforum.name %>/threads/new">New thread</a>
         <% } %>
     </div> 
+    <p><small><%= subforum.description %></small></p>
 
     <table class="table table-sm text-white table-dark">
         <thead>

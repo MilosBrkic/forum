@@ -1,0 +1,49 @@
+
+
+ 
+    
+            
+<div class="mb-2">
+    <button class="btn btn-secondary" type="button" title="Bold" onclick="insertTag('<b>', '</b>')">B</button>
+    <button class="btn btn-secondary" type="button" title="Italic" onclick="insertTag('<i>', '</i>')"><i>I</i></button>
+    <button class="btn btn-secondary" type="button" title="Underline" onclick="insertTag('<u>', '</u>')"><u>U</u></button>
+    
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownInsertImg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        IMG
+    </button>
+    <div class="dropdown-menu p-1" aria-labelledby="dropdownInsertImg">
+        <input type="text" id="imgURL" class="" placeholder="URL">
+        <button class="btn btn-secondary" type="button" title="Underline" onclick="insertImg()"><u>Insert</u></button>
+    </div>
+</div>   
+                
+<div>                   
+    <textarea class="bg-light" name="text" id="text" rows="6" placeholder="Enter message..." required maxlength="2000" style="width: 100%; min-height: 100px;"></textarea>
+    <br>
+    <input class="btn btn-info mt-1" type="submit" value="Post">
+</div>
+
+
+<script>
+    var textarea = document.getElementById("text");
+
+    function insertTag(tagStart, tagEnd){        
+        var text = textarea.value;
+        var cursorStart = textarea.selectionStart;
+        var cursorEnd = textarea.selectionEnd;
+        textarea.value = text.substring(0, cursorStart) + tagStart + text.substring(cursorStart,cursorEnd) + tagEnd + text.substring(cursorEnd);
+    }
+
+    function insertImg(){
+        var text = textarea.value;
+        var url = document.getElementById("imgURL").value; 
+        document.getElementById("imgURL").value = "";
+
+        var cursorStart = textarea.selectionStart;
+        var cursorEnd = textarea.selectionEnd;
+        textarea.value = text.substring(0, cursorStart) + `[img]${url}[/img]` + text.substring(cursorEnd);
+    }
+
+
+</script>
+     

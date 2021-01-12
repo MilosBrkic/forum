@@ -46,7 +46,7 @@ passport.deserializeUser( async(id, done) => {
     return done(null, results.rows[0]);
 });
 
-//vraca username na svaku stranicu
+//returns user to each page
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     next();
@@ -54,6 +54,7 @@ app.use((req, res, next) => {
 
 //routes
 app.use("/", require('./routes/index'));
+app.use("/subforum", require('./routes/subforums'));
 app.use("/threads", require('./routes/threads'));
 app.use("/posts", require('./routes/posts'));
 app.use("/users", require('./routes/users'));
@@ -64,7 +65,7 @@ app.set('view engine', 'ejs');
 
 
 app.listen(port, () => {
-    console.log(`Server je pokrenut na portu ${port}`);
+    console.log(`Server has started on port ${port}`);
 });
 
 //npm start app.js

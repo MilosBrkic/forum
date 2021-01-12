@@ -33,7 +33,8 @@ router.post('/register', async (req, res) => {
             await db.query('INSERT INTO users (username, password) VALUES ($1, $2)', [
                 req.body.username,
                 hash
-            ]);              
+            ]);
+            req.flash('message','Registration was success.');                
             return res.redirect('login');           
         });
             
@@ -94,6 +95,7 @@ router.post('/changePassword', async (req, res) => {
 router.post('/changeAvatar',isLogged, async (req, res) => {
     try{
         await db.query('UPDATE users SET avatar = $1 WHERE username = $2', [req.body.avatar, req.user.username]);
+        req.flash('message','Avatar URL was successfully changed.');  
     }
     catch(err){
         req.flash('error','Changing of avatar failed. Max length of URL is 150 characters.');       
