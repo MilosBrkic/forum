@@ -10,7 +10,7 @@ router.post("/add", isLogged ,async (req, res) => {
         return res.redirect(`../threads/${req.body.thread}/page-0`);
     }
     if(filterText(req.body.text) == ""){
-        req.flash('error','Invalid message');
+        req.flash('error','Invalid post text');
         return res.redirect(`../threads/${req.body.thread}/page-0`);
     }
     
@@ -28,7 +28,50 @@ router.post("/add", isLogged ,async (req, res) => {
     }
 }); 
 
+//show edit posts page
+router.get("/:id/edit", isLogged ,async (req, res) => {
+    try{
+        var result = await db.query('SELECT post.id, post.text, thread.title FROM post JOIN thread ON post.thread = thread.id WHERE post.id = $1', [req.params.id]);
+        console.log(result.rows);
+        return res.render('posts/edit', {post: result.rows[0]});
+    }
+    catch(err){
+        req.flash('error','Page not found.');
+        return res.redirect('/');
+    }
+}); 
 
+//POST edit post
+router.post("/:id", isLogged ,async (req, res) => {
+    try {
+        console.log(req.params.id);
+        var result = await db.query('SELECT post.user_id, post.thread FROM post JOIN thread ON post.thread = thread.id JOIN users ON post.user_id = users.id WHERE post.id = $1', [req.params.id]);
+        console.log(result.rows);
+        var post = result.rows[0];
+        if(post == null){
+            req.flash('error','Post not found.');
+            return res.redirect('/');
+        }   
+        if(req.user.id != post.user_id && req.user.status !=  'admin'){
+            req.flash('error','You do not gave permission for this action.');
+            return res.redirect('back');
+        }
+        if(!req.body.text || filterText(req.body.text) == ""){
+            req.flash('error','Invalid post text');
+            return res.redirect('back');
+        }   
+        await db.query('UPDATE post SET text = $1 WHERE id = $2', [req.body.text, req.params.id]);
+        return res.redirect(`/threads/${post.thread}`);
+    } 
+    catch (err) {
+        req.flash('error',err.message);
+        return res.redirect('/');
+    }
+
+    //return res.render('posts/edit', {post: result.rows[0]});
+}); 
+
+//delete post
 router.get('/:id/delete', isLogged, async (req, res) => {
     try{
         var result = await db.query('SELECT * FROM post WHERE id = $1', [req.params.id]);

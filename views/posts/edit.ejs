@@ -1,0 +1,20 @@
+<%- include ('../components/header') %>
+
+<div class="container">
+    
+    <h2>Edit post</h2>
+
+    <% if(post) { %>
+    <h3><% post.title %></h3>
+    <form method="POST" action="/posts/<%= post.id %>">
+        <%- include ('../components/writePost', {text: post.text}) %> 
+    </form>
+    <% } else { %>
+    <p>Post not found</p>
+    <% } %>
+    <%- include ('../components/error') %>     
+</div>
+
+
+
+<%- include ('../components/footer') %>

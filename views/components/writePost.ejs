@@ -1,7 +1,7 @@
 
 
  
-    
+<!-- parameter 'text' can be passed to this component as default text in textarea-->    
             
 <div class="mb-2">
     <button class="btn btn-secondary" type="button" title="Bold" onclick="insertTag('<b>', '</b>')">B</button>
@@ -18,7 +18,7 @@
 </div>   
                 
 <div>                   
-    <textarea class="bg-light" name="text" id="text" rows="6" placeholder="Enter message..." required maxlength="2000" style="width: 100%; min-height: 100px;"></textarea>
+    <textarea class="bg-light" name="text" id="text" rows="6" placeholder="Enter message..." required maxlength="2000" style="width: 100%; min-height: 100px;"><%= text %></textarea>
     <br>
     <input class="btn btn-info mt-1" type="submit" value="Post">
 </div>

@@ -27,6 +27,7 @@
                     <%  if(currentUser){
                             if(currentUser.status == 'admin' || currentUser.username == post.user ){ %>
                                 <a class="btn float-right" href="/posts/<%= post.id %>/delete" onclick="return confirm('Are you sure you want to delete this post?')" >Delete</a>
+                                <a class="btn float-right" href="/posts/<%= post.id %>/edit" >Edit</a>
                             <% } %>
                             <button class="btn float-right" text="<%= post.text %>" onclick="quote(this,'<%= post.user %>')">Quote</button>
                     <% } %>
@@ -58,7 +59,7 @@
                 <form action="/posts/add" method="POST">
                     
                     <input type="number" name="thread" value="<%= posts[0].thread_id %>" hidden>
-                    <%- include ('../components/writePost') %>   
+                    <%- include ('../components/writePost', {text: null}) %>   
                                 
                 </form>
             </div>       
