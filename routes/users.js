@@ -17,8 +17,8 @@ router.post('/register', async (req, res) => {
         req.flash('error','Enter username and password');
         return res.redirect('register');
     }
-    if(req.body.username.match('"')){
-        req.flash('error','Sign " cannot be part of username');
+    if(!/^[a-zA-Z0-9]*$/.test(req.body.username)){
+        req.flash('error','Username must contain letters or numbers only');
         return res.redirect('register');
     }
 

@@ -20,8 +20,8 @@
         <thead>
             <tr>
               <th scope="col" style="width: 65%">Thread</th>
-              <th scope="col" style="width: 15%">Posts</th>
-              <th scope="col" style="width: 20%">Last post</th>
+              <th scope="col" class="d-none d-lg-table-cell" style="width: 15%">Posts</th>
+              <th scope="col" class="d-none d-lg-table-cell" style="width: 20%">Last post</th>
             </tr>
         </thead>
         <tbody>
@@ -29,9 +29,13 @@
         if(threads)
         threads.forEach(function(thread) { %>
             <tr>
-                <td><h5><a class="text-white" href="/threads/<%=thread.id %>"><%=thread.title %></a></h5></td>
-                <td><%= thread.postcount %></td>
-                <td><%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric'}).format(thread.lastpost) %></td>   
+                <td><h5><a class="text-white" href="/threads/<%=thread.id %>"><%=thread.title %></a></h5>
+                    <div class="d-lg-none bg-dark">
+                        <small>Last post: <%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric'}).format(thread.lastpost) %></small>                   
+                    </div>
+                </td>
+                <td class="d-none d-lg-table-cell"><%= thread.postcount %></td>
+                <td class="d-none d-lg-table-cell"><%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric'}).format(thread.lastpost) %></td>   
             </tr>
         <% });  %>
         </tbody>     

@@ -29,12 +29,12 @@ app.use(passport.session());
 passport.use(new localtStrategy( async (username, password, done) => {
     var result = await db.query('SELECT * FROM users WHERE username = $1', [username]);  
     if(result.rows[0] == null)
-        return done(null, false, { message: 'Pogresno korisnicko ime' });       
+        return done(null, false, { message: 'Incorrect username' });       
     bcrypt.compare(password, result.rows[0].password, function(err, isMatch) {               
         if(isMatch)
             return done(null, result.rows[0]);                 
         else
-            return done(null, false, { message: 'Pogresna lozinka' });    
+            return done(null, false, { message: 'Incorrect password' });    
     });                              
 }));
 

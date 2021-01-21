@@ -80,8 +80,10 @@ router.get('/:id/delete', isLogged, async (req, res) => {
         if(req.user.status == 'admin' || req.user.id == post.user_id){
             //get id of the first post of the thread
             var result = await db.query('SELECT id FROM post WHERE thread = $1 ORDER BY date LIMIT 1', [post.thread]);
-            if(result.rows[0].id != req.params.id)
+            if(result.rows[0].id != req.params.id){
                 await db.query('DELETE FROM post WHERE id = $1', [req.params.id]);
+                await db.query('UPDATE users SET message_count = message_count -1 WHERE id = $1', [req.user.id]);
+            }
             else
                 req.flash('error','First post of the thread cannot be deleted');
         }
