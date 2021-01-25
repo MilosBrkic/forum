@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../db/');
 const isLogged = require('../middleware');
 
-
+//add post
 router.post("/add", isLogged ,async (req, res) => {
     if(!req.body.text || !req.body.thread || !req.user){
         req.flash('error','Error');
@@ -15,7 +15,7 @@ router.post("/add", isLogged ,async (req, res) => {
     }
     
     try{
-        var result = await db.query('INSERT INTO post (text, thread, user_id) VALUES($1, $2, $3)', [
+        await db.query('INSERT INTO post (text, thread, user_id) VALUES($1, $2, $3)', [
             req.body.text,
             req.body.thread,
             req.user.id
@@ -68,7 +68,6 @@ router.post("/:id", isLogged ,async (req, res) => {
         return res.redirect('/');
     }
 
-    //return res.render('posts/edit', {post: result.rows[0]});
 }); 
 
 //delete post
@@ -76,7 +75,7 @@ router.get('/:id/delete', isLogged, async (req, res) => {
     try{
         var result = await db.query('SELECT * FROM post WHERE id = $1', [req.params.id]);
         var post = result.rows[0];
-        //console.log(post);
+
         if(req.user.status == 'admin' || req.user.id == post.user_id){
             //get id of the first post of the thread
             var result = await db.query('SELECT id FROM post WHERE thread = $1 ORDER BY date LIMIT 1', [post.thread]);

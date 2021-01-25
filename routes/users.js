@@ -58,10 +58,6 @@ router.get('/logout', (req, res) => {
     res.redirect('../');
 });
 
-/*
-router.get('/image', (req, res) => {
-    res.sendFile(path.resolve('../Forum/views/users/image/default.jpg'));
-});*/
 
 //show user profile
 router.get('/:username/view', async (req, res) => {

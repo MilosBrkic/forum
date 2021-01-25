@@ -12,4 +12,4 @@ Made using:
 - PostgreSQL
 
 Hosted on:
-https://dankforum.herokuapp.com
+https://freeforum.herokuapp.com
